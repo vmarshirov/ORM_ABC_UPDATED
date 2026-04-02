@@ -51,8 +51,9 @@ requirements.txt            ← зависимости проекта
 
 ## Полезные команды Django Shell
 
-```python
-# Запуск: python manage.py shell
+```
+# Запуск:
+python manage.py shell
 from orm_abc_app.models import AbcModel
 
 # Создание
@@ -61,10 +62,6 @@ AbcModel.objects.create(task='Тест', a=1, b=2, c=10)
 # Чтение
 AbcModel.objects.all()
 AbcModel.objects.filter(c=10).values('id', 'task', 'a', 'b', 'c')
-
-# Агрегация
-from django.db.models import Sum, Avg
-AbcModel.objects.aggregate(Sum('b'), Avg('b'))
 ```
 
 Подробнее — в файле `orm_abc_app/ORM.py`.
