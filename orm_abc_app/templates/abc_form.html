@@ -18,7 +18,7 @@
     <form action="{% url 'orm_abc_app:abc_get' %}" method="get">
 
         {# Django автоматически рендерит все поля формы AbcForm #}
-        {{ abc_form.as_p }}
+        {{ abc_form }}
 
         <button type="submit" class="btn btn-primary mt-2">Отправить</button>
     </form>
