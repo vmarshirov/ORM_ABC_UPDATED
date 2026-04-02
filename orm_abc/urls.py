@@ -13,7 +13,7 @@ from django.urls import include, path
 urlpatterns = [
     # Административный интерфейс Django: http://127.0.0.1:8000/admin/
     # Доступ: createsuperuser → логин/пароль
-    path("admin/", admin.site.urls),
+    path("admin/", admin.site.urls, name="admin"),
 
     # Подключаем URL-маршруты приложения orm_abc_app к корневому пути.
     # Все маршруты из orm_abc_app/urls.py доступны с корня сайта (/).

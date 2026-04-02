@@ -1,3 +1,4 @@
+
 ## Быстрый старт
 
 ```bash
@@ -14,6 +15,7 @@ python manage.py migrate
 
 # 4. Создать суперпользователя (для /admin/)
 python manage.py createsuperuser
+root root
 
 # 5. Запустить сервер разработки
 python manage.py runserver
@@ -49,19 +51,41 @@ requirements.txt            ← зависимости проекта
 
 ---
 
+## Страницы приложения
+
+| URL | Описание |
+|-----|----------|
+| `/` | Главная страница со ссылками на документацию |
+| `/datetime_nov/` | Демонстрация даты и времени в шаблоне |
+| `/var_list_dict/` | Переменные, списки и словари в шаблоне |
+| `/abc_form/` | Простая форма (Form, GET-метод) |
+| `/abc_model_form/` | ModelForm (стандартное отображение) |
+| `/abc_tweaks_form/` | ModelForm с django-widget-tweaks |
+| `/abc_result/` | Результат проверки C = A + B |
+| `/table/` | Таблица всех записей и статистика |
+| `/admin/` | Административный интерфейс Django |
+
+---
+
+
 ## Полезные команды Django Shell
 
-```
-# Запуск:
+```python
+# Запуск: 
 python manage.py shell
 from orm_abc_app.models import AbcModel
 
-# Создание
-AbcModel.objects.create(task='Тест', a=1, b=2, c=10)
+# Создание записи
+first = AbcModel.objects.create(task='Тест', a=1, b=2, c=10)
+first.save()
 
 # Чтение
 AbcModel.objects.all()
 AbcModel.objects.filter(c=10).values('id', 'task', 'a', 'b', 'c')
+
+# Агрегация
+from django.db.models import Sum, Avg
+AbcModel.objects.aggregate(Sum('b'), Avg('b'))
 ```
 
 Подробнее — в файле `orm_abc_app/ORM.py`.

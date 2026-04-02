@@ -1,8 +1,5 @@
 """
-Обучающий скрипт: демонстрация Django ORM QuerySet API.
-
-Этот файл НЕ предназначен для выполнения как обычный Python-скрипт.
-Он содержит набор примеров команд для Django-оболочки.
+Этот файл cодержит набор примеров команд для Django-оболочки.
 
 Запуск Django-оболочки:
     python manage.py shell
@@ -21,12 +18,12 @@
 # Импорты (выполнять в оболочке: python manage.py shell)
 # ---------------------------------------------------------------------------
 
+from orm_abc_app.models import AbcModel
 from django.db import connection, models, reset_queries
 from django.db.models import Avg, Count, Max, Min, StdDev, Sum
 from django.db.models import Q
 from django.db.models.functions import Abs, Power, Random
 
-from orm_abc_app.models import AbcModel
 
 
 # ===========================================================================
@@ -50,7 +47,7 @@ AbcModel.objects.all()
 
 # Итерация по QuerySet
 for entry in AbcModel.objects.all():
-    print(entry.task)
+    print(entry.id, entry.task)
 
 # Сортировка по возрастанию id с последующим разворотом
 AbcModel.objects.all().order_by("id").reverse()
@@ -59,7 +56,7 @@ AbcModel.objects.all().order_by("id").reverse()
 AbcModel.objects.values("id", "task", "current_date").order_by("-id")
 
 # Сложный запрос: фильтр, сортировка, срез, извлечение значения
-AbcModel.objects.values().filter(id__gte=27).order_by("-id")[0:1][0]["task"]
+AbcModel.objects.values().filter(id__gte=2).order_by("-id")[0:1][0]["task"]
 
 # Получить первый/последний объект
 AbcModel.objects.all().order_by("-id")[:1][0]
@@ -96,7 +93,7 @@ AbcModel.objects.values_list("id").order_by("id").reverse()[:3]
 # ===========================================================================
 
 # Обновление одного поля
-AbcModel.objects.filter(id__gte=50).update(task="updated")
+AbcModel.objects.filter(id__gte=5).update(task="updated")
 
 # Обновление нескольких полей одновременно
 update_obj = AbcModel.objects.filter(id__gte=1)
