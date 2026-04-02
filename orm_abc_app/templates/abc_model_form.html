@@ -24,7 +24,7 @@
         {% csrf_token %}
 
         {# Рендер всех полей формы с метками и ошибками валидации #}
-        {{ form.as_p }}
+        {{ form }}
 
         <button type="submit" class="btn btn-primary mt-2">Сохранить</button>
         <a href="{% url 'orm_abc_app:abc_result' %}" class="btn btn-secondary mt-2">
