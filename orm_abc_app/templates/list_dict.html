@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{#
+    Шаблон страницы "Переменные, списки и словари".
+    Получает из контекста:
+        var_main  (int)  — простая переменная
+        list_main (list) — список чисел
+        dict_main (dict) — словарь {'x': 1, 'y': 2}
+
+    Документация по тегам и фильтрам шаблонов:
+        https://docs.djangoproject.com/en/5.2/ref/templates/language/
+        https://docs.djangoproject.com/en/5.2/ref/templates/builtins/
+#}
+
+{% block title %}orm_abc — Переменные / Список / Словарь{% endblock %}
+
+{% block content %}
+    <h5>Демонстрация переменных, списков и словарей</h5>
+
+    {# --- Простая переменная --- #}
+    <h6 class="mt-3">Переменная</h6>
+    <p><strong>var_main:</strong> {{ var_main }}</p>
+
+    {# --- Список --- #}
+    <h6 class="mt-3">Список (list_main)</h6>
+    <p>Весь список: {{ list_main }}</p>
+
+    <p>
+    Обращение к элементу по индексу через точечную нотацию.
+    <br>{{ list_main.1 }} — это элемент с индексом 1 (второй элемент).
+    </p>
+    
+    {# Итерация по списку с условием #}
+    <ul>
+        {% for value in list_main %}
+            {% if value == var_main %}
+                {# Элемент равен var_main — подсвечиваем #}
+                <li class="text-success"><strong>{{ value }}</strong> ← равен var_main</li>
+            {% else %}
+                <li>{{ value }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    {# --- Словарь --- #}
+    <h6 class="mt-3">Словарь (dict_main)</h6>
+    <p>Весь словарь: {{ dict_main }}</p>
+
+    {# Обращение к значению по ключу через точечную нотацию #}
+    <p>dict_main.x = {{ dict_main.x }}</p>
+    <p>dict_main.y = {{ dict_main.y }}</p>
+
+    {# Итерация по парам ключ-значение словаря #}
+    <ul>
+        {% for key, value in dict_main.items %}
+            <li>
+                <strong>{{ key }}</strong>: {{ value }}
+                {% if value == var_main %}
+                    <span class="text-success">← совпадает с var_main</span>
+                {% else %}
+                    <span class="text-muted">← не совпадает</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

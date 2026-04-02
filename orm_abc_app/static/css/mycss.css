@@ -1,0 +1,23 @@
+/*
+ * Стили приложения orm_abc_app.
+ * Подключается в layout.html через {% load static %} / {% static 'css/mycss.css' %}.
+ *
+ * Дополняет Bootstrap 5.3 — переопределяйте только то, чего нет в Bootstrap.
+ */
+
+/* Фоновый цвет заголовка/шапки страницы (используется в layout.html) */
+.bgc {
+    background-color: #cbebf5; /* мягкий зелёный — ассоциация с Django */
+}
+
+/* Метки форм: отображаем как блочный элемент с увеличенным межстрочным интервалом */
+label {
+    display: table-row;
+    line-height: 2.0rem;
+}
+
+/* Поля ввода: ширина по содержимому (Bootstrap переопределяет на 100%, возвращаем) */
+input[type="text"],
+input[type="number"] {
+    width: fit-content;
+}

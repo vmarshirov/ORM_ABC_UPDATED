@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{#
+    Шаблон страницы "Дата и время".
+    Получает переменную {{ key }} из контекста представления datetime_nov.
+    Переменная содержит объект datetime.datetime.
+#}
+
+{% block title %}orm_abc — Дата и время{% endblock %}
+
+{% block content %}
+    <h5>Демонстрация даты и времени</h5>
+
+    {# Отображение объекта datetime напрямую (Django вызывает __str__) #}
+    <p><strong>Текущее время (datetime.now):</strong> {{ key }}</p>
+
+    {# Django поддерживает форматирование дат прямо в шаблоне через фильтр date #}
+    {# Документация: https://docs.djangoproject.com/en/5.2/ref/templates/builtins/#date #}
+    <p><strong>Дата (форматированная):</strong> {{ key|date:"d.m.Y" }}</p>
+    <p><strong>Время:</strong> {{ key|time:"H:i:s" }}</p>
+    <p><strong>Полный формат:</strong> {{ key|date:"d.m.Y H:i:s" }}</p>
+{% endblock %}

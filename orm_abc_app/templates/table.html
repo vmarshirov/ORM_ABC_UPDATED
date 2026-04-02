@@ -1,0 +1,111 @@
+{% extends 'layout.html' %}
+
+{#
+    Шаблон страницы таблицы.
+    Отображает все записи AbcModel и агрегатную статистику.
+    Получает из контекста (views.py → table):
+        objects_values      (QuerySet) — все записи как словари
+        name_list           (list)     — технические имена полей
+        objects_values_list (QuerySet) — отфильтрованные записи как кортежи
+        verbose_name_list   (list)     — читаемые имена полей
+        statics             (dict)     — статистика по полю B
+#}
+
+{% block title %}orm_abc — Таблица{% endblock %}
+
+{% block content %}
+    <h5>Таблица записей</h5>
+
+    {# --- Таблица 1: все записи через .values() --- #}
+    <h6 class="mt-3">Все записи (<code>.values()</code>)</h6>
+    <p class="text-muted small">Заголовки — технические имена полей (name_list).</p>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="table-light">
+                <tr>
+                    {# Итерируем по техническим именам полей модели #}
+                    {% for name in name_list %}
+                        <th>{{ name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {#
+                    objects_values — QuerySet словарей.
+                    Каждый объект — словарь {поле: значение}.
+                #}
+                {% for obj in objects_values %}
+                    <tr>
+                        {% for key, value in obj.items %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% empty %}
+                    {# Отображается, если QuerySet пуст #}
+                    <tr>
+                        <td colspan="{{ name_list|length }}" class="text-center text-muted">
+                            Записей нет
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>{# ИСПРАВЛЕНО: в оригинале было <tbody> вместо </tbody> #}
+        </table>
+    </div>
+
+    {# --- Таблица 2: отфильтрованные записи через .values_list() --- #}
+    <h6 class="mt-4">
+        Отфильтрованные записи (<code>.values_list().filter(id__gte=2).order_by("-id")</code>)
+    </h6>
+    <p class="text-muted small">Заголовки — verbose_name полей модели.</p>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="table-light">
+                <tr>
+                    {# Итерируем по читаемым именам полей #}
+                    {% for name in verbose_name_list %}
+                        <th>{{ name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {#
+                    objects_values_list — QuerySet кортежей.
+                    Каждый элемент — кортеж значений полей.
+                #}
+                {% for row in objects_values_list %}
+                    <tr>
+                        {% for item in row %}
+                            <td>{{ item }}</td>
+                        {% endfor %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="{{ verbose_name_list|length }}" class="text-center text-muted">
+                            Записей нет
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>{# ИСПРАВЛЕНО: в оригинале было <tbody> вместо </tbody> #}
+        </table>
+    </div>
+
+    {# --- Статистика --- #}
+    <h6 class="mt-4">Агрегатная статистика по полю B (отфильтрованные записи)</h6>
+    <p class="text-muted small">
+        Результаты <code>.aggregate(Count|Avg|Min|Max|StdDev|Sum)</code>
+    </p>
+    
+        {#
+            statics.statics_val — список словарей от aggregate().
+            Каждый элемент: {'b__count': N} или {'b__avg': X.X} и т.д.
+        #}
+    <ul class="list-group list-group-horizontal flex-wrap">    
+        {% for item in statics.statics_val %}
+            {% for key, value in item.items %}
+                <li class="list-group-item">
+                    <strong>{{ key }}</strong>: {{ value|floatformat:2 }}
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+{% endblock %}

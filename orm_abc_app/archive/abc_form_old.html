@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+    АРХИВНАЯ ВЕРСИЯ формы abc_form (старый вариант без наследования от layout.html).
+    Файл сохранён для справки. Не используется в проекте.
+
+    ОШИБКИ в оригинале (НЕ исправлены намеренно — это архив):
+        1. metod='get' — опечатка (должно быть method="get")
+        2. action="/abc_get" — жёстко заданный URL вместо {% url %}
+        3. Нет {% csrf_token %} (для GET-форм не критично, но для POST обязательно)
+-->
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>abc_form (архив)</title>
+</head>
+<body>
+
+<!-- Оригинальная форма с опечаткой "metod" (сохранена как есть для истории) -->
+<form action="/abc_get" method="get" target="_self">
+    {{ abc_form }}
+    <input type="submit" value="Отправить">
+</form>
+
+</body>
+</html>

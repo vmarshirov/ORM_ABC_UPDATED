@@ -1,0 +1,105 @@
+{% extends 'layout.html' %}
+
+{#
+    Шаблон ModelForm с настройкой виджетов через django-widget-tweaks.
+
+     Библиотека django-widget-tweaks позволяет добавлять CSS-классы и атрибуты
+    к полям формы прямо в шаблоне, не изменяя код Python.
+
+    {% comment %} Тег {% render_field %} принимает поле формы и дополнительные атрибуты: {% endcomment %}
+    {% comment %} {% render_field form.task class="form-control" placeholder="Введите текст" %} {% endcomment %}
+
+    Документация widget-tweaks: https://pypi.org/project/django-widget-tweaks/
+#}
+
+{% block title %}orm_abc — Tweaks Form{% endblock %}
+
+{% block content %}
+    <h5>ModelForm с django-widget-tweaks</h5>
+    <p class="text-muted small">
+        Поля формы оформлены через тег <code>{% verbatim %}{% render_field %}{% endverbatim %}</code>
+        из библиотеки <code>django-widget-tweaks</code>.
+    </p>
+
+    {# Загружаем тег-библиотеку widget_tweaks (должна быть в INSTALLED_APPS) #}
+    {% load widget_tweaks %}
+
+  
+    <form action="{% url 'orm_abc_app:abc_tweaks_form' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            {# Поле "Формулировка задачи" #}
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">
+                    {{ form.task.label }}
+                </label>
+                <div class="col-sm-9">
+                    {# render_field добавляет Bootstrap-класс form-control к <input> #}
+                    {% render_field form.task class="form-control" %}
+                    {# Отображаем ошибки валидации, если есть #}
+                    {% if form.task.errors %}
+                        <div class="text-danger small">{{ form.task.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Поле A #}
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">{{ form.a.label }}</label>
+                <div class="col-sm-9">
+                    {% render_field form.a class="form-control" %}
+                    {% if form.a.errors %}
+                        <div class="text-danger small">{{ form.a.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Поле B #}
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">{{ form.b.label }}</label>
+                <div class="col-sm-9">
+                    {% render_field form.b class="form-control" %}
+                    {# Подсказка из help_text модели #}
+                    {% if form.b.help_text %}
+                        <small class="text-muted">{{ form.b.help_text }}</small>
+                    {% endif %}
+                    {% if form.b.errors %}
+                        <div class="text-danger small">{{ form.b.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Поле C (select с choices) #}
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">{{ form.c.label }}</label>
+                <div class="col-sm-9">
+                    {% render_field form.c class="form-select" %}
+                    {% if form.c.errors %}
+                        <div class="text-danger small">{{ form.c.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Поле Результат (только для чтения или информационное) #}
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">{{ form.result.label }}</label>
+                <div class="col-sm-9">
+                    {% render_field form.result class="form-control" %}
+                </div>
+            </div>
+
+            {# Кнопка отправки #}
+            <div class="mb-3 row">
+                <div class="col-sm-9 offset-sm-3">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a href="{% url 'orm_abc_app:abc_result' %}" class="btn btn-secondary ms-2">
+                        К результатам
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

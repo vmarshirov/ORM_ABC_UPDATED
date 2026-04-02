@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+
+{#
+    Шаблон страницы результатов.
+    Отображает последнюю сохранённую запись и результат проверки C = A + B.
+
+    Получает из контекста (views.py → abc_result):
+        last_object      (dict)  — поля task, a, b, c последней записи
+        task_formulation (str)   — формулировка задачи
+        last_values      (list)  — список [a, b, c, result]
+        result           (str)   — текст результата («С равна...» или «С не равна...»)
+#}
+
+{% block title %}orm_abc — Результат{% endblock %}
+
+{% block content %}
+    <h5>Результат проверки C = A + B</h5>
+
+    {# Формулировка задачи из последней записи #}
+    <h6 class="text-muted">{{ task_formulation }}</h6>
+
+    {# --- Таблица 1: данные из values() — словарь --- #}
+    <p class="mb-1"><strong>Данные из <code>.values()</code> (словарь):</strong></p>
+    <table class="table table-bordered table-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Задача</th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>Результат</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {# Итерация по парам ключ-значение словаря last_object #}
+                {% for key, value in last_object.items %}
+                    <td><small class="text-muted">{{ key }}:</small> {{ value }}</td>
+                {% endfor %}
+                {# Результат вычисляется в представлении, добавляем отдельно #}
+                <td>
+                    {% if "не равна" in result %}
+                        <span class="text-danger">{{ result }}</span>
+                    {% else %}
+                        <span class="text-success">{{ result }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    {# --- Таблица 2: данные из values_list() — кортеж --- #}
+    <p class="mb-1 mt-3"><strong>Данные из <code>.values_list()</code> (кортеж):</strong></p>
+    <table class="table table-bordered table-sm">
+        <thead class="table-light">
+            <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>Result (сохранено в БД)</th>
+                <th>Вычислено сейчас</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {# last_values = [a, b, c, result] #}
+                {% for item in last_values %}
+                    <td>{{ item }}</td>
+                {% endfor %}
+                <td>
+                    {% if "не равна" in result %}
+                        <span class="text-danger">{{ result }}</span>
+                    {% else %}
+                        <span class="text-success">{{ result }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    {# Ссылки для быстрой навигации #}
+    <div class="mt-3">
+        <a href="{% url 'orm_abc_app:abc_model_form' %}" class="btn btn-outline-primary btn-sm">
+            ← Добавить запись
+        </a>
+        <a href="{% url 'orm_abc_app:table' %}" class="btn btn-outline-secondary btn-sm ms-2">
+            Все записи →
+        </a>
+    </div>
+{% endblock %}

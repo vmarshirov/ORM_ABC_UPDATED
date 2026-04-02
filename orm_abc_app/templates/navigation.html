@@ -1,0 +1,65 @@
+<!--
+    Навигационное меню приложения.
+
+        Использует Bootstrap-класс «nav» для горизонтального меню.
+    При переименовании маршрута URL в urls.py ссылки обновятся автоматически.
+-->
+<ul class="nav flex-wrap">
+
+    <!-- Главная страница -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:index' %}">
+            Главная
+        </a>
+    </li>
+
+    <!-- Демонстрация даты и времени -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:datetime_nov' %}">
+            Дата и время
+        </a>
+    </li>
+
+    <!-- Демонстрация переменных, списков и словарей -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:var_list_dict' %}">
+            Переменные / Список / Словарь
+        </a>
+    </li>
+
+    <!-- Простая форма (Form, GET-метод) -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:abc_form' %}">
+            Форма (Form)
+        </a>
+    </li>
+
+    <!-- ModelForm — стандартное отображение Django -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:abc_model_form' %}">
+            ModelForm
+        </a>
+    </li>
+
+    <!-- ModelForm с виджетами django-widget-tweaks -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:abc_tweaks_form' %}">
+            Tweaks Form
+        </a>
+    </li>
+
+    <!-- Страница результатов -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:abc_result' %}">
+            Результат
+        </a>
+    </li>
+
+    <!-- Таблица со статистикой -->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'orm_abc_app:table' %}">
+            Таблица
+        </a>
+    </li>
+
+</ul>
