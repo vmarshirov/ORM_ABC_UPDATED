@@ -11,6 +11,7 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 
 # 3. Применить миграции
+python manage.py makemigrations
 python manage.py migrate
 
 # 4. Создать суперпользователя (для /admin/)
